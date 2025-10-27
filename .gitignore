@@ -205,3 +205,8 @@ cython_debug/
 marimo/_static/
 marimo/_lsp/
 __marimo__/
+
+# Training data and model files
+*.jsonl
+model_name.txt
+gpt_3_5_Fine_Tuning_gimhan.ipynb  # Contains sensitive information

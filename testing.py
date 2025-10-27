@@ -3,10 +3,8 @@ from openai import OpenAI
 import pandas as pd
 from dotenv import load_dotenv
 
-# Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def load_system_message():
@@ -20,7 +18,6 @@ def load_system_message():
 def test_model(model_name=None, num_tests=5):
     """Test the fine-tuned model with sample prompts"""
     if model_name is None:
-        # Try to load model name from file
         try:
             with open("model_name.txt", "r") as f:
                 model_name = f.read().strip()
@@ -28,7 +25,6 @@ def test_model(model_name=None, num_tests=5):
             print("❌ No model name provided and couldn't find model_name.txt")
             return
 
-    # Load the training data to sample test prompts
     df = pd.read_json('training_examples.jsonl', lines=True)
     system_message = load_system_message()
 
@@ -37,7 +33,6 @@ def test_model(model_name=None, num_tests=5):
     print("\nRunning test cases:")
     print("-" * 50)
 
-    # Sample some prompts and test the model
     test_prompts = df['messages'].apply(lambda x: x[1]['content']).sample(n=num_tests)
     
     for i, test_prompt in enumerate(test_prompts, 1):

@@ -7,10 +7,8 @@ import pandas as pd
 from dotenv import load_dotenv
 from config import MODEL_PROMPT, TEMPERATURE, NUMBER_OF_EXAMPLES, N_RETRIES, DATA_MODEL
 
-# Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 @retry(stop=stop_after_attempt(N_RETRIES), wait=wait_exponential(multiplier=1, min=4, max=70))
@@ -60,18 +58,15 @@ def generate_system_message(prompt, temperature=TEMPERATURE):
     return response.choices[0].message.content
 
 def create_training_data():
-    # Generate examples
     prev_examples = []
     for i in range(NUMBER_OF_EXAMPLES):
         print(f'Generating example {i}')
         example = generate_example(MODEL_PROMPT, prev_examples, TEMPERATURE)
         prev_examples.append(example)
 
-    # Generate system message
     system_message = generate_system_message(MODEL_PROMPT)
     print(f'System message: {system_message}')
 
-    # Process examples into DataFrame
     prompts = []
     responses = []
 
@@ -91,7 +86,6 @@ def create_training_data():
     df = df.drop_duplicates()
     print(f'Generated {len(df)} unique examples')
 
-    # Create training examples in JSONL format
     training_examples = []
     for index, row in df.iterrows():
         training_example = {

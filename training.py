@@ -4,10 +4,8 @@ import time
 from dotenv import load_dotenv
 from config import BASE_MODEL
 
-# Load environment variables
 load_dotenv()
 
-# Initialize OpenAI client
 client = OpenAI(api_key=os.getenv('OPENAI_API_KEY'))
 
 def upload_training_file(file_path='training_examples.jsonl'):
@@ -44,7 +42,7 @@ def monitor_job_status(job_id):
             
         if status in ["succeeded", "failed", "cancelled"]:
             break
-        time.sleep(10)  # wait 10 seconds before checking again
+        time.sleep(10)
 
     if status == "succeeded":
         model_name = job_info.fine_tuned_model
@@ -56,17 +54,14 @@ def monitor_job_status(job_id):
 
 def train_model():
     """Main training function"""
-    # Upload training file
     print("Uploading training file...")
     file_id = upload_training_file()
     print("✅ File uploaded successfully:", file_id)
 
-    # Create fine-tuning job
     print("Creating fine-tuning job...")
     job_id = create_fine_tuning_job(file_id)
     print("🎯 Fine-tuning job started:", job_id)
 
-    # Monitor progress and get model name
     print("Monitoring training progress...")
     model_name = monitor_job_status(job_id)
     
@@ -76,6 +71,5 @@ if __name__ == "__main__":
     model_name = train_model()
     if model_name:
         print("Training completed successfully. Model name:", model_name)
-        # Save model name to file for testing
         with open("model_name.txt", "w") as f:
             f.write(model_name)

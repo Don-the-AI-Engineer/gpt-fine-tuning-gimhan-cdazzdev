@@ -1,4 +1,4 @@
-# GPT-3.5 Fine-Tuning for Robotics SDK Translation
+# GPT-3.5 Fine-Tuning
 
 This is the Job Assessment for the CDAZZDEV Senior Machine Learning Engineer Position.
 
